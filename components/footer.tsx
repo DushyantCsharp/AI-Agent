@@ -21,9 +21,7 @@ export function Footer() {
         </div>
         <div>
           <div className="font-medium mb-2">Company</div>
-          <ul className="space-y-1 text-sm">
-            <li><Link href="/about">About</Link></li>
-            <li><Link href="/careers">Careers</Link></li>
+          <ul className="space-y-1 text-sm"
           </ul>
         </div>
         <div>
