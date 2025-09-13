@@ -2,30 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fluid type */
+/* -----------------------------
+   Base / Theme tokens
+------------------------------ */
 :root {
+  /* Fluid type scale */
   --step--1: clamp(0.78rem, 0.77rem + 0.03vw, 0.80rem);
   --step-0:  clamp(1.00rem, 0.97rem + 0.12vw, 1.08rem);
   --step-1:  clamp(1.25rem, 1.18rem + 0.35vw, 1.62rem);
   --step-2:  clamp(1.56rem, 1.42rem + 0.69vw, 2.25rem);
   --step-3:  clamp(1.95rem, 1.70rem + 1.25vw, 3.00rem);
+
+  /* Color tokens (fallbacks if Tailwind vars missing) */
+  --brand-blue: #2563EB;  /* matches tailwind.config.ts 'brand-blue' */
+  --brand-purple: #7C3AED;
 }
+
+/* Typography scale */
 h1 { font-size: var(--step-3); }
 h2 { font-size: var(--step-2); }
-:focus-visible { outline: none; @apply ring-2 ring-brand-blue ring-offset-2; }
+
+/* Smooth scroll (respects reduced motion below) */
 html { scroll-behavior: smooth; }
 
-/* Marquee */
-@keyframes marqueeX { 0% {transform: translateX(0);} 100% {transform: translateX(-50%);} }
-.marquee { mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-.marquee__inner { display:flex; gap:.75rem; width:max-content; animation: marqueeX 24s linear infinite; }
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus styles (accessible, themed) */
+:focus-visible {
+  outline: none;
+  @apply ring-2 ring-brand-blue ring-offset-2;
+}
+
+/* Selection */
+::selection {
+  @apply bg-blue-600/20 text-inherit;
+}
+
+/* Normalize interactive elements a bit */
+button, [type="button"], [type="submit"] {
+  @apply cursor-pointer;
+}
+a {
+  @apply underline-offset-4;
+}
+a:hover {
+  @apply underline;
+}
+
+/* -----------------------------
+   Marquee utility
+------------------------------ */
+@keyframes marqueeX {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.marquee__inner {
+  display: flex;
+  gap: .75rem;
+  width: max-content;
+  animation: marqueeX 24s linear infinite;
+}
 .marquee--slow .marquee__inner { animation-duration: 34s; }
 
-/* Card hover */
+/* -----------------------------
+   Card hover
+------------------------------ */
 .card-hover { transition: transform .25s ease, box-shadow .25s ease; }
 .card-hover:hover { transform: translateY(-4px); }
 
-/* Subtle aurora backdrop */
+/* -----------------------------
+   Subtle aurora backdrop
+------------------------------ */
 .aurora { position: relative; isolation: isolate; }
 .aurora::before {
   content: "";
@@ -37,7 +97,24 @@ html { scroll-behavior: smooth; }
   animation: aurora 22s ease-in-out infinite;
 }
 @keyframes aurora {
-  0% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-6%) scale(1.03); }
-  100% { transform: translateY(0) scale(1); }
+  0%   { transform: translateY(0)   scale(1); }
+  50%  { transform: translateY(-6%) scale(1.03); }
+  100% { transform: translateY(0)   scale(1); }
 }
+
+/* -----------------------------
+   Dark mode helpers (optional)
+------------------------------ */
+.dark .surface {
+  @apply bg-slate-900/40 border border-slate-800 backdrop-blur;
+}
+.light .surface {
+  @apply bg-white/70 border border-slate-200 backdrop-blur;
+}
+
+/* -----------------------------
+   Scrollbar (WebKit)
+------------------------------ */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-700 rounded-full; }
+*::-webkit-scrollbar-track { @apply bg-transparent; }
