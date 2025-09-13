@@ -1,0 +1,7 @@
+# netlify.toml
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/automate-hq/30min"
