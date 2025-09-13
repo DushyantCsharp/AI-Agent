@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fluid type */
+:root {
+  --step--1: clamp(0.78rem, 0.77rem + 0.03vw, 0.80rem);
+  --step-0:  clamp(1.00rem, 0.97rem + 0.12vw, 1.08rem);
+  --step-1:  clamp(1.25rem, 1.18rem + 0.35vw, 1.62rem);
+  --step-2:  clamp(1.56rem, 1.42rem + 0.69vw, 2.25rem);
+  --step-3:  clamp(1.95rem, 1.70rem + 1.25vw, 3.00rem);
+}
+h1 { font-size: var(--step-3); }
+h2 { font-size: var(--step-2); }
+:focus-visible { outline: none; @apply ring-2 ring-brand-blue ring-offset-2; }
+html { scroll-behavior: smooth; }
+
+/* Marquee */
+@keyframes marqueeX { 0% {transform: translateX(0);} 100% {transform: translateX(-50%);} }
+.marquee { mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+.marquee__inner { display:flex; gap:.75rem; width:max-content; animation: marqueeX 24s linear infinite; }
+.marquee--slow .marquee__inner { animation-duration: 34s; }
+
+/* Card hover */
+.card-hover { transition: transform .25s ease, box-shadow .25s ease; }
+.card-hover:hover { transform: translateY(-4px); }
+
+/* Subtle aurora backdrop */
+.aurora { position: relative; isolation: isolate; }
+.aurora::before {
+  content: "";
+  position: absolute; inset: -20%; z-index: -1;
+  background:
+    radial-gradient(40% 40% at 20% 30%, rgba(37,99,235,.16), transparent 60%),
+    radial-gradient(35% 35% at 70% 40%, rgba(11,15,26,.18), transparent 60%);
+  filter: blur(40px);
+  animation: aurora 22s ease-in-out infinite;
+}
+@keyframes aurora {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6%) scale(1.03); }
+  100% { transform: translateY(0) scale(1); }
+}
