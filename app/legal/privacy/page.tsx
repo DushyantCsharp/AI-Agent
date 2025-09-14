@@ -1,10 +1,14 @@
-export default function Page() {
+// app/legal/privacy/page.tsx (add Calendly CTA)
+import { CalendlyPopupButton } from "@/components/calendly-modal";
+
+export default function PrivacyPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <h1 className="text-3xl font-bold">Privacy Policy</h1>
-      <p className="text-sm text-gray-700 dark:text-gray-300">
-        We follow POPIA and global best practices. Contact us for a DPA and data residency options.
-      </p>
-    </div>
+    <section className="container-prose py-16">
+      <h1>Privacy Policy</h1>
+      <p className="mt-4 text-slate-600 dark:text-slate-300">Your privacy is important to us.</p>
+      <div className="mt-6">
+        <CalendlyPopupButton label="Book a 30-min demo" />
+      </div>
+    </section>
   );
 }

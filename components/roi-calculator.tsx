@@ -1,4 +1,3 @@
-// components/roi-calculator.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -18,65 +17,46 @@ type Inputs = {
   avgMinutesPerCall: number;
   workdaysPerMonth: number;
   hourlyWageZAR: number;
-  aiSharePercent: number; // % of call minutes handled by AI
+  aiSharePercent: number; // % of minutes handled by AI
   perMinuteRateZAR: number; // Growth = 1.5
 };
 
-function compute(inputs: Inputs) {
-  const {
-    agents,
-    callsPerAgentPerDay,
-    avgMinutesPerCall,
-    workdaysPerMonth,
-    hourlyWageZAR,
-    aiSharePercent,
-    perMinuteRateZAR,
-  } = inputs;
-
+function compute(i: Inputs) {
   const totalMinutes =
-    agents * callsPerAgentPerDay * avgMinutesPerCall * workdaysPerMonth;
+    i.agents * i.callsPerAgentPerDay * i.avgMinutesPerCall * i.workdaysPerMonth;
 
   const humanOnlyHours = totalMinutes / 60;
-  const humanOnlyCost = humanOnlyHours * hourlyWageZAR;
+  const humanOnlyCost = humanOnlyHours * i.hourlyWageZAR;
 
-  const aiShare = Math.max(0, Math.min(aiSharePercent, 100)) / 100;
+  const aiShare = Math.max(0, Math.min(i.aiSharePercent, 100)) / 100;
   const humanMinutesWithAI = totalMinutes * (1 - aiShare);
-  const humanHoursWithAI = humanMinutesWithAI / 60;
-  const humanCostWithAI = humanHoursWithAI * hourlyWageZAR;
+  const humanCostWithAI = (humanMinutesWithAI / 60) * i.hourlyWageZAR;
 
   const aiMinutes = totalMinutes * aiShare;
-  const aiCost = aiMinutes * perMinuteRateZAR;
+  const aiCost = aiMinutes * i.perMinuteRateZAR;
 
   const netWithAI = humanCostWithAI + aiCost;
   const savings = Math.max(0, humanOnlyCost - netWithAI);
   const roi = netWithAI > 0 ? (savings / netWithAI) * 100 : 0;
 
-  return {
-    totalMinutes,
-    humanOnlyCost,
-    humanCostWithAI,
-    aiCost,
-    netWithAI,
-    savings,
-    roi,
-  };
+  return { totalMinutes, humanOnlyCost, humanCostWithAI, aiCost, netWithAI, savings, roi };
 }
 
 export function ROISection() {
-  // sensible SA defaults
+  // Sensible SA defaults
   const [agents, setAgents] = useState(10);
-  const [callsPerAgentPerDay, setCallsPerAgentPerDay] = useState(35);
-  const [avgMinutesPerCall, setAvgMinutesPerCall] = useState(6);
-  const [workdaysPerMonth, setWorkdaysPerMonth] = useState(22);
-  const [hourlyWageZAR, setHourlyWageZAR] = useState(70); // ~R70/hour baseline
-  const [aiSharePercent, setAiSharePercent] = useState(50);
+  const [calls, setCalls] = useState(35); // ✅ fixed: use `calls` consistently
+  const [avgMinutesPerCall, setMinutes] = useState(6);
+  const [workdaysPerMonth, setDays] = useState(22);
+  const [hourlyWageZAR, setWage] = useState(70);
+  const [aiSharePercent, setAI] = useState(50);
   const [perMinuteRateZAR] = useState(1.5); // Growth plan
 
   const result = useMemo(
     () =>
       compute({
         agents,
-        callsPerAgentPerDay,
+        callsPerAgentPerDay: calls, // ✅ pass `calls`
         avgMinutesPerCall,
         workdaysPerMonth,
         hourlyWageZAR,
@@ -85,7 +65,7 @@ export function ROISection() {
       }),
     [
       agents,
-      callsPerAgentPerDay,
+      calls,
       avgMinutesPerCall,
       workdaysPerMonth,
       hourlyWageZAR,
@@ -102,7 +82,7 @@ export function ROISection() {
             Calculate your savings & ROI
           </h2>
           <p className="mt-3 text-slate-600 dark:text-slate-300">
-            Model your real South African costs. Slide how much work the AI handles and see monthly ROI instantly.
+            Model your South African costs. Slide how much work the AI handles and see monthly ROI instantly.
           </p>
         </div>
 
@@ -110,48 +90,13 @@ export function ROISection() {
           {/* Inputs */}
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 bg-white/70 dark:bg-slate-900/40 backdrop-blur">
             <div className="grid md:grid-cols-2 gap-5">
-              <NumberField
-                label="Agents"
-                value={agents}
-                onChange={setAgents}
-                min={1}
-                step={1}
-              />
-              <NumberField
-                label="Calls per agent / day"
-                value={callsPerAgentPerDay}
-                onChange={setCallsPerAgentPerDay}
-                min={1}
-                step={1}
-              />
-              <NumberField
-                label="Avg minutes per call"
-                value={avgMinutesPerCall}
-                onChange={setAvgMinutesPerCall}
-                min={1}
-                step={1}
-              />
-              <NumberField
-                label="Workdays per month"
-                value={workdaysPerMonth}
-                onChange={setWorkdaysPerMonth}
-                min={1}
-                step={1}
-              />
-              <NumberField
-                label="Hourly wage (ZAR)"
-                value={hourlyWageZAR}
-                onChange={setHourlyWageZAR}
-                min={10}
-                step={5}
-              />
-              <SliderField
-                label="AI handles (%)"
-                value={aiSharePercent}
-                onChange={setAiSharePercent}
-              />
+              <NumberField label="Agents" value={agents} onChange={setAgents} min={1} step={1} />
+              <NumberField label="Calls per agent / day" value={calls} onChange={setCalls} min={1} step={1} />
+              <NumberField label="Avg minutes per call" value={avgMinutesPerCall} onChange={setMinutes} min={1} step={1} />
+              <NumberField label="Workdays per month" value={workdaysPerMonth} onChange={setDays} min={1} step={1} />
+              <NumberField label="Hourly wage (ZAR)" value={hourlyWageZAR} onChange={setWage} min={10} step={5} />
+              <SliderField label="AI handles (%)" value={aiSharePercent} onChange={setAI} />
             </div>
-
             <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">
               *Growth usage billed at R1.50/min. Beginner has no per-minute billing (fair usage applies).
             </p>
@@ -159,46 +104,16 @@ export function ROISection() {
 
           {/* Results */}
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 bg-white/70 dark:bg-slate-900/40 backdrop-blur">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-              Monthly impact
-            </h3>
-
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Monthly impact</h3>
             <div className="mt-5 space-y-3 text-sm">
               <Row label="Total minutes (all agents)" value={result.totalMinutes.toLocaleString()} />
               <Row label="Human-only cost" value={formatZAR(result.humanOnlyCost)} />
               <Row label="Human cost with AI" value={formatZAR(result.humanCostWithAI)} />
               <Row label="AI usage cost (R1.50/min)" value={formatZAR(result.aiCost)} />
               <div className="h-px bg-slate-200 dark:bg-slate-800 my-3" />
-              <Row
-                label="Net cost with AI"
-                value={formatZAR(result.netWithAI)}
-                bold
-              />
-              <Row
-                label="Monthly savings"
-                value={formatZAR(result.savings)}
-                good
-              />
-              <Row
-                label="ROI % (monthly)"
-                value={`${Math.round(result.roi)}%`}
-                good
-              />
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-              >
-                Talk to a specialist
-              </a>
-              <a
-                href="/docs/getting-started"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-              >
-                See rollout guide
-              </a>
+              <Row label="Net cost with AI" value={formatZAR(result.netWithAI)} bold />
+              <Row label="Monthly savings" value={formatZAR(result.savings)} good />
+              <Row label="ROI % (monthly)" value={`${Math.round(result.roi)}%`} good />
             </div>
           </div>
         </div>
@@ -249,9 +164,7 @@ function NumberField({
 }) {
   return (
     <label className="block">
-      <span className="block text-sm font-medium text-slate-800 dark:text-slate-100">
-        {label}
-      </span>
+      <span className="block text-sm font-medium text-slate-800 dark:text-slate-100">{label}</span>
       <input
         type="number"
         value={value}

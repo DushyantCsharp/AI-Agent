@@ -1,8 +1,9 @@
+// next.config.ts
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    typedRoutes: false, // ❌ disable typed routes
+    typedRoutes: true, // keep strict route checks
   },
 };
 

@@ -1,13 +1,7 @@
-// app/contact/page.tsx
-import type { Metadata } from "next";
+// app/schedule/page.tsx (embed stays; this route is optional)
 import { CalendlyPopupButton } from "@/components/calendly-modal";
 
-export const metadata: Metadata = {
-  title: "Schedule — Automate-HQ",
-  description: "Book a 30-minute demo with Automate-HQ.",
-};
-
-export default function ContactPage() {
+export default function SchedulePage() {
   const href =
     (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim() ||
     "https://calendly.com/automate-hq/30min";
@@ -15,15 +9,13 @@ export default function ContactPage() {
 
   return (
     <section className="container-prose py-16">
-      <h1>Book a 30-minute demo</h1>
+      <h1>Schedule a 30-minute call</h1>
       <p className="mt-3 text-slate-600 dark:text-slate-300">
-        Pick a time that suits you. We’ll walk you through setup and ROI for your queues.
+        Pick a time that suits you. We’ll walk you through setup and ROI.
       </p>
-
       <div className="mt-6">
         <CalendlyPopupButton label="Open booking popup" />
       </div>
-
       <div className="mt-8">
         <iframe
           src={src}

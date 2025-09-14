@@ -1,25 +1,24 @@
 // components/footer.tsx
 import Link from "next/link";
+import { CalendlyPopupButton } from "@/components/calendly-modal";
 import type { Route } from "next";
 
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-black/5 dark:border-white/10">
       <div className="mx-auto max-w-7xl px-4 py-12 grid gap-8 md:grid-cols-4">
-        {/* Brand */}
         <div className="space-y-2">
           <div className="font-semibold text-lg">Automate-HQ</div>
           <p className="text-sm text-slate-600 dark:text-slate-300">
             AI voice agents for South African call centres — faster-than-human,
             POPIA-ready, and measurable ROI.
           </p>
+          <CalendlyPopupButton label="Book a 30-min demo" />
         </div>
 
-        {/* Company */}
         <nav aria-label="Company">
           <div className="font-medium mb-2">Company</div>
           <ul className="space-y-1 text-sm">
-            {/* Cast to Route to satisfy typedRoutes even if pages are not added yet */}
             <li><Link href={"/about" as Route}>About</Link></li>
             <li><Link href={"/careers" as Route}>Careers</Link></li>
             <li><Link href={"/legal/privacy" as Route}>Privacy</Link></li>
@@ -28,7 +27,6 @@ export function Footer() {
           </ul>
         </nav>
 
-        {/* Product */}
         <nav aria-label="Product">
           <div className="font-medium mb-2">Product</div>
           <ul className="space-y-1 text-sm">
@@ -39,11 +37,14 @@ export function Footer() {
           </ul>
         </nav>
 
-        {/* Contact */}
         <nav aria-label="Contact">
           <div className="font-medium mb-2">Contact</div>
           <ul className="space-y-1 text-sm">
-            <li><Link href={"/contact" as Route}>Book a demo</Link></li>
+            <li>
+              <a href="mailto:hello@automate-hq.co.za" className="hover:underline">
+                hello@automate-hq.co.za
+              </a>
+            </li>
           </ul>
         </nav>
       </div>

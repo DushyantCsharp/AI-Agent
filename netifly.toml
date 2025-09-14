@@ -1,7 +1,20 @@
-# netlify.toml
+# netlify.toml  (sets Calendly env; optional CSP example)
 [build]
   command = "npm run build"
   publish = ".next"
 
 [build.environment]
   NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/automate-hq/30min"
+
+# Uncomment to enforce a CSP that allows Calendly
+# [[headers]]
+#   for = "/*"
+#   [headers.values]
+#     Content-Security-Policy = """
+#       default-src 'self';
+#       script-src 'self' https://assets.calendly.com 'unsafe-inline' 'unsafe-eval';
+#       frame-src 'self' https://calendly.com https://assets.calendly.com;
+#       connect-src 'self' https://calendly.com https://api.calendly.com https://assets.calendly.com;
+#       style-src 'self' 'unsafe-inline' https://assets.calendly.com;
+#       img-src 'self' data: https://*.calendly.com https://assets.calendly.com;
+#     """

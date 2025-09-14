@@ -1,19 +1,18 @@
-// app/pricing/page.tsx
+// app/pricing/page.tsx (all CTAs use Calendly)
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ROISection } from "@/components/roi-calculator";
 import { PlanCard } from "@/components/plan-card";
+import { CalendlyPopupButton } from "@/components/calendly-modal";
 
 export const metadata: Metadata = {
   title: "Pricing — Automate-HQ AI Call Centre Agent",
   description:
-    "Transparent pricing for South African call centres. Beginner R2,900/mo (no usage), Growth R5,000/mo + R1.50/min, Enterprise custom. Calculate your ROI instantly.",
+    "Beginner R2,900/mo (no usage), Growth R5,000/mo + R1.50/min, Enterprise custom. Calculate your ROI instantly.",
 };
 
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
-      {/* Hero */}
       <section className="px-6 md:px-10 lg:px-16 py-16 md:py-24">
         <div className="max-w-6xl mx-auto text-center">
           <span className="inline-flex items-center rounded-full border border-slate-200 dark:border-slate-800 px-3 py-1 text-xs font-medium tracking-wide text-slate-600 dark:text-slate-300">
@@ -26,14 +25,15 @@ export default function PricingPage() {
             Our AI agents work like your best human agents — just faster, 24/7, and at a fraction of
             the cost. Pick a plan and start reducing wait times, drop rates, and handle time today.
           </p>
+          <div className="mt-6">
+            <CalendlyPopupButton label="Book a 30-min demo" />
+          </div>
         </div>
       </section>
 
-      {/* Plans */}
       <section className="px-6 md:px-10 lg:px-16 pb-8">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 md:gap-8">
           <PlanCard
-            highlight={false}
             name="Beginner"
             price="R2,900"
             frequency="/month"
@@ -48,7 +48,6 @@ export default function PricingPage() {
               "Email support (business hours)",
             ]}
             ctaText="Start Beginner"
-            badge=""
           />
 
           <PlanCard
@@ -70,7 +69,6 @@ export default function PricingPage() {
           />
 
           <PlanCard
-            highlight={false}
             name="Enterprise"
             price="Custom"
             frequency=""
@@ -84,7 +82,6 @@ export default function PricingPage() {
               "24/7 support with uptime SLA",
             ]}
             ctaText="Talk to Sales"
-            badge=""
           />
         </div>
 
@@ -94,10 +91,8 @@ export default function PricingPage() {
         </p>
       </section>
 
-      {/* ROI Section */}
       <ROISection />
 
-      {/* FAQ (concise) */}
       <section className="px-6 md:px-10 lg:px-16 py-16">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-white">
@@ -118,29 +113,10 @@ export default function PricingPage() {
                 24/7 availability, and fewer missed calls. Use the calculator above for your numbers.
               </p>
             </div>
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 bg-white/60 dark:bg-slate-900/40 backdrop-blur">
-              <h3 className="font-semibold text-slate-900 dark:text-white">Rollout speed</h3>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                Most teams go live in days. Bring your scripts and FAQs — we’ll help tune intents,
-                set escalations, and enable human handover from day one.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 p-6 bg-white/60 dark:bg-slate-900/40 backdrop-blur">
-              <h3 className="font-semibold text-slate-900 dark:text-white">Compliance</h3>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                POPIA & GDPR-aligned data handling, opt-in call recording, audit trails, and secure
-                retention by default. Enterprise options available.
-              </p>
-            </div>
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-blue-600 text-white font-semibold shadow-sm hover:bg-blue-700 transition"
-            >
-              Book a 30-min demo
-            </Link>
+          <div className="mt-10">
+            <CalendlyPopupButton label="Book a 30-min demo" />
           </div>
         </div>
       </section>

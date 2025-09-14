@@ -10,7 +10,6 @@ import { Footer } from "@/components/footer";
 import { Analytics } from "@/components/analytics";
 import { CookieBanner } from "@/components/cookie-banner";
 
-/** Self-host fonts at build time (no runtime fetch failures) */
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -41,7 +40,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  /* Support dark and light theme colors on mobile address bar */
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#2563EB" },
     { media: "(prefers-color-scheme: dark)", color: "#0B0F1A" },
@@ -51,7 +49,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* Use the next/font variable and keep Tailwind classes simple */}
       <body className={`${inter.variable} bg-white text-gray-900 dark:bg-black dark:text-gray-100`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="aurora min-h-screen flex flex-col">

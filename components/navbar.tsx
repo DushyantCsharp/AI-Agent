@@ -1,36 +1,52 @@
+// components/navbar.tsx
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { CalendlyButton } from "@/components/calendly-modal";
+import { useState } from "react";
+import { CalendlyPopupButton } from "@/components/calendly-modal";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const [open, setOpen] = useState(false);
 
   return (
-    <header className={`sticky top-0 z-50 transition
-      ${scrolled ? "border-b border-black/5 dark:border-white/10 backdrop-blur bg-white/80 dark:bg-black/50" : "bg-transparent"}
-    `}>
-      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-6">
-        <Link href="/" className="font-semibold text-lg tracking-tight">Automate-HQ</Link>
+    <header className="sticky top-0 z-40 border-b border-black/5 dark:border-white/10 bg-white/70 dark:bg-black/40 backdrop-blur">
+      <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
+        <Link href="/" className="font-semibold">Automate-HQ</Link>
+
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/solutions">Solutions</Link>
           <Link href="/how-it-works">How it works</Link>
+          <Link href="/solutions">Solutions</Link>
           <Link href="/pricing">Pricing</Link>
-          <Link href="/contact">Contact</Link>
         </nav>
-        <div className="ml-auto flex items-center gap-3">
-          <ThemeToggle />
-          <CalendlyButton label="Schedule a 30-minute call" />
+
+        <div className="hidden md:flex items-center gap-3">
+          <CalendlyPopupButton label="Book a 30-min demo" />
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-slate-300 dark:border-slate-700"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
       </div>
+
+      {/* Mobile sheet */}
+      {open && (
+        <div className="md:hidden border-t border-black/5 dark:border-white/10 bg-white dark:bg-black">
+          <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col gap-3">
+            <Link href="/how-it-works" onClick={() => setOpen(false)}>How it works</Link>
+            <Link href="/solutions" onClick={() => setOpen(false)}>Solutions</Link>
+            <Link href="/pricing" onClick={() => setOpen(false)}>Pricing</Link>
+            <div className="pt-2">
+              <CalendlyPopupButton label="Book a 30-min demo" />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,7 +1,7 @@
-// components/plan-card.tsx
+// components/plan-card.tsx (CTA opens Calendly instead of linking to /contact)
 "use client";
 
-import Link from "next/link";
+import { CalendlyPopupButton } from "@/components/calendly-modal";
 import { cn } from "@/lib/utils";
 
 type PlanCardProps = {
@@ -51,27 +51,16 @@ export function PlanCard({
 
       <ul className="mt-6 space-y-2 text-sm">
         {features.map((f) => (
-          <li
-            key={f}
-            className="flex items-start gap-2 text-slate-700 dark:text-slate-200"
-          >
+          <li key={f} className="flex items-start gap-2 text-slate-700 dark:text-slate-200">
             <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-600 inline-block" />
             <span>{f}</span>
           </li>
         ))}
       </ul>
 
-      <Link
-        href="/contact"
-        className={cn(
-          "mt-8 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition",
-          highlight
-            ? "bg-blue-600 text-white hover:bg-blue-700"
-            : "border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
-        )}
-      >
-        {ctaText}
-      </Link>
+      <div className="mt-8">
+        <CalendlyPopupButton label={ctaText} />
+      </div>
     </div>
   );
 }
