@@ -36,11 +36,6 @@ export function Footer() {
           </ul>
         </nav>
 
-        <nav aria-label="Contact">
-          <div className="font-medium mb-2">Contact</div>
-          <ul className="space-y-1 text-sm">
-          </ul>
-        </nav>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 pb-10 text-xs text-slate-500 dark:text-slate-400">
