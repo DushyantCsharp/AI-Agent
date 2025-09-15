@@ -20,7 +20,6 @@ export function Footer() {
           <div className="font-medium mb-2">Company</div>
           <ul className="space-y-1 text-sm">
             <li><Link href={"/about" as Route}>About</Link></li>
-            <li><Link href={"/careers" as Route}>Careers</Link></li>
             <li><Link href={"/legal/privacy" as Route}>Privacy</Link></li>
             <li><Link href={"/legal/terms" as Route}>Terms</Link></li>
             <li><Link href={"/legal/popia" as Route}>POPIA</Link></li>
@@ -40,11 +39,6 @@ export function Footer() {
         <nav aria-label="Contact">
           <div className="font-medium mb-2">Contact</div>
           <ul className="space-y-1 text-sm">
-            <li>
-              <a href="mailto:hello@automate-hq.co.za" className="hover:underline">
-                hello@automate-hq.co.za
-              </a>
-            </li>
           </ul>
         </nav>
       </div>
